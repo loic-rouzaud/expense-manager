@@ -1,3 +1,4 @@
 requirements.txt
 .env
 expenses-env
+__pycache__
