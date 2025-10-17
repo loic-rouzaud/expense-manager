@@ -21,7 +21,7 @@ function App() {
       const data: ApiResponse = await response.json();
       console.log(data);
 
-      setResponseMessage(JSON.stringify(data, null, 2));
+      setResponseMessage(JSON.stringify(data.message, null, 2));
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);
@@ -39,7 +39,7 @@ function App() {
         <button onClick={helloworld}>Appeler le backend</button>
 
         {responseMessage && (
-          <pre style={{ textAlign: "left", marginTop: "1em" }}>
+          <pre style={{ textAlign: "center", marginTop: "1em" }}>
             {responseMessage}
           </pre>
         )}
