@@ -1,14 +1,9 @@
 # Expense Manager
 
-pour moi :
+Goal : Manage expenses efficiently, and don't be broke at the end of the month...
 
-## installer les requirements.txt :
+## Launch via docker-compose
 
 ```bash
-pip install -r requirements.txt
-```
-
-## pour lancer fastapi
-```bash
-uvicorn main:app --reload
+docker-compose up -d
 ```
