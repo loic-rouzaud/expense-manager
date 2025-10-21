@@ -1,12 +1,15 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+from sqlalchemy.orm import Session
+from db.db import get_db
+from db.models import User
+from Router import users
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-origins = [
-    "http://localhost:5173",
-    "http://localhost:8000",
-]
+app.include_router(users.router)
+
+origins = ["http://localhost:5173", "http://localhost:8000"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -15,8 +18,3 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-@app.get("/hello")
-async def root():
-    print("received")
-    return {"message": "Hello World"}

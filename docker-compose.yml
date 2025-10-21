@@ -1,6 +1,17 @@
-version: "3.9"
-
 services:
+  db:
+    container_name: postgres_db
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: expense_manager
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+
   backend:
     build: ./backend
     container_name: backend
@@ -8,6 +19,10 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/expense_manager
+    depends_on:
+      - db
     restart: unless-stopped
 
   frontend:
@@ -23,20 +38,6 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
-
-  db:
-    image: postgres:16
-    container_name: postgres_db
-    restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: expense_db
-    ports:
-      - "5432:5432"
-    volumes:
-      - db_data:/var/lib/postgresql/data
-      - ./backend/db/init.sql:/docker-entrypoint-initdb.d/init.sql
 
 volumes:
   db_data:

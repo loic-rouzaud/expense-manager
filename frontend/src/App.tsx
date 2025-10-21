@@ -1,27 +1,26 @@
 import { useState } from "react";
 import "./App.css";
 
-interface ApiResponse {
-  message: string;
+interface UserResponse {
+  id?: number;
+  name?: string;
+  email?: string;
+  created_at?: string;
+  message?: string;
 }
 
 function App() {
   const [responseMessage, setResponseMessage] = useState<string>("");
 
-  async function helloworld(): Promise<void> {
-    const url = "http://localhost:8000/hello";
+  async function getUser(): Promise<void> {
+    const url = "http://localhost:8000/user";
 
     try {
       const response = await fetch(url);
-
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      }
-
-      const data: ApiResponse = await response.json();
+      if (!response.ok) throw new Error(`Response status: ${response.status}`);
+      const data: UserResponse = await response.json();
       console.log(data);
-
-      setResponseMessage(JSON.stringify(data.message, null, 2));
+      setResponseMessage(JSON.stringify(data, null, 2));
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);
@@ -36,7 +35,7 @@ function App() {
   return (
     <>
       <div className="card">
-        <button onClick={helloworld}>Appeler le backend</button>
+        <button onClick={getUser}>Get users</button>
 
         {responseMessage && (
           <pre style={{ textAlign: "center", marginTop: "1em" }}>
